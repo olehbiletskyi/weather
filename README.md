@@ -1,6 +1,7 @@
-# Getting Started with Create React App
+# Welcome!
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Thanks for visiting my website, and I hope it helps you stay prepared and informed about the weather in your area.
+
 
 ## Available Scripts
 
