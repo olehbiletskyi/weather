@@ -2,9 +2,7 @@ import React from 'react'
 import Navigation from './navigation'
 
 function App() {
-  return (
-    <Navigation />
-  )
+  return <Navigation />
 }
 
 export default App

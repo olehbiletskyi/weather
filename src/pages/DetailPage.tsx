@@ -1,11 +1,12 @@
 import React, { FC } from 'react'
-import {  Box, Toolbar, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 
 const DetailPage: FC = () => {
   return (
-    <Box component="main" sx={{ p: 3 }}>
-      <Toolbar />
-      <Typography variant='h6' component='div'>Detail page</Typography>
+    <Box component='main' sx={{ p: 3 }}>
+      <Typography variant='h6' component='div'>
+        Detail page
+      </Typography>
     </Box>
   )
 }

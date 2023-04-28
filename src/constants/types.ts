@@ -4,10 +4,8 @@ import { paths } from './paths'
 type pathType = `${paths}`
 
 type routeType = {
-  path: pathType,
+  path: pathType
   component: React.ElementType
 }
-
-
 
 export { routeType, pathType }

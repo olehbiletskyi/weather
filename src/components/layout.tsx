@@ -1,27 +1,19 @@
 import React, { FC, ReactNode } from 'react'
-import { AppBar, Box, CssBaseline, Toolbar, Typography } from '@mui/material'
-import WbSunnyIcon from '@mui/icons-material/WbSunny'
-import ThunderstormSharpIcon from '@mui/icons-material/ThunderstormSharp'
+import Header from './header'
+import { Container } from '@mui/material'
 
 interface IProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
 const Layout: FC<IProps> = ({ children }) => {
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar>
-        <Toolbar sx={{ justifyContent: 'center' }}>
-          <WbSunnyIcon />
-          <Typography variant='h6' component='div' marginX={'10px'}>
-              Weather forecast
-          </Typography>
-          <ThunderstormSharpIcon />
-        </Toolbar>
-      </AppBar>
-      {children}
-    </Box>
+    <>
+      <Header />
+      <Container sx={{ backgroundColor: '#fff7e6', marginY: '1.5rem' }} maxWidth={'xl'} disableGutters={true}>
+        {children}
+      </Container>
+    </>
   )
 }
 

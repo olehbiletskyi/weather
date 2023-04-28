@@ -1,6 +1,6 @@
-enum paths  {
+enum paths {
   MAIN = 'main',
-  DETAIL = 'detail'
+  DETAIL = 'detail',
 }
 
 export { paths }
