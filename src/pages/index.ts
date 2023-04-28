@@ -1,6 +1,5 @@
-import BootstrapPage from './bootstrapPage'
-import MainPage  from './mainPage'
-import DetailPage  from './detailPage'
-import ErrorPage  from './errorPage'
+import MainPage  from './MainPage'
+import DetailPage  from './DetailPage'
+import ErrorPage  from './ErrorPage'
 
-export { BootstrapPage, MainPage, DetailPage, ErrorPage }
+export { MainPage, DetailPage, ErrorPage }
