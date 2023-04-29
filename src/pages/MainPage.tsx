@@ -1,15 +1,17 @@
 import React, { FC } from 'react'
 import { Box, Grid } from '@mui/material'
-import { AddNewCityBtn, CityCard } from '../components'
-
-const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+import { AddNewCityBtn, CityCard } from 'components'
+import { useAppSelector } from 'hooks'
+import { allCitiesSelector } from 'store/citiesSelector/citiesSelector'
 
 const MainPage: FC = () => {
+  const cities = useAppSelector(allCitiesSelector) // get all cities from redux
+
   return (
     <Box component='main' sx={{ p: 3 }}>
       <Grid container spacing={2}>
-        {arr?.map((city) => {
-          return <CityCard key={city} id={city} />
+        {cities?.cities?.map((item) => {
+          return <CityCard key={item.id} id={item.id} name={item.name} />
         })}
       </Grid>
       <Grid

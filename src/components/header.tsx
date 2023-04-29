@@ -8,8 +8,12 @@ const Header = () => {
     <AppBar sx={{ height: '5.5rem' }} position={'static'}>
       <Toolbar sx={{ justifyContent: 'center', height: 'inherit' }}>
         <WbSunnyIcon fontSize={'large'} />
-        <Typography variant={'h4'} component={'span'} sx={{ marginX: '1.5rem' }}>
-          Weather forecast
+        <Typography
+          variant={'h4'}
+          component={'span'}
+          sx={{ marginX: '1.5rem', textAlign: 'center' }}
+        >
+          Current Weather
         </Typography>
         <ThunderstormSharpIcon fontSize={'large'} />
       </Toolbar>

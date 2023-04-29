@@ -13,11 +13,7 @@ const Layout: FC<IProps> = ({ children }) => {
       <Suspense fallback={<>Loading...</>}>
         <Header />
         <AnimatePageWrapper>
-          <Container
-            sx={{ backgroundColor: '#fff7e6', marginY: '1.5rem' }}
-            maxWidth={'xl'}
-            disableGutters={true}
-          >
+          <Container sx={{ backgroundColor: '#fff7e6' }} maxWidth={'xl'} disableGutters={true}>
             {children}
           </Container>
         </AnimatePageWrapper>

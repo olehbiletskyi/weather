@@ -25,6 +25,7 @@
     "import"
   ],
   "rules": {
+    "@typescript-eslint/no-empty-interface": "off",
     "comma-dangle": ["warn", "always-multiline"],
     "eol-last": "off",
     "react/react-in-jsx-scope": "off",
@@ -83,9 +84,7 @@
     }],
 
     // React deprecation prefix
-    "camelcase": ["error", {
-      "allow": ["^UNSAFE_"]
-    }],
+    "camelcase": "off",
 
     // hooks
     "react-hooks/rules-of-hooks": "error"

@@ -1,4 +1,4 @@
-import { DetailPage, MainPage } from '../pages'
+import { DetailPage, MainPage } from 'pages'
 import { paths } from './paths'
 
 const routes = [
