@@ -29,18 +29,15 @@ export const fetchCity = createAsyncThunk(
   async (thunkArg: { cityName: string }, thunkAPI) => {
     try {
       const response = await fetchCityByName(thunkArg.cityName)
-      console.log('response:', response)
       if (!response.ok) {
         throw new Error('Server Error!') // todo
       }
       const data = await response.json()
-      console.log('response data:', data)
       addCityToLocalStorage('Cities', data.name)
 
       return data
     } catch (error: any) {
       // todo
-      console.log('error:', error)
       return thunkAPI.rejectWithValue(error.message)
     }
   },
@@ -63,10 +60,13 @@ const citiesSlice = createSlice({
       return state
     },
     removeCity(state, action: PayloadAction<{ id: number }>) {
-      console.log(state, action)
       const deletedCity = state.cities.find((item) => item.id === action.payload.id)
       state.cities = state.cities.filter((item) => item.id !== action.payload.id)
       deleteCityFromLocalStorage('Cities', deletedCity?.name || '')
+    },
+    cancelError(state, action) {
+      state.error = null
+      state.status = 'idle'
     },
   },
   extraReducers: (builder) => {
@@ -80,14 +80,12 @@ const citiesSlice = createSlice({
       state.error = null
     })
     builder.addCase(fetchCity.rejected, (state, action) => {
-      console.log('state:', state)
-      console.log('action:', action)
       state.status = 'failed'
       state.error = action.payload
     })
   },
 })
 
-export const { getAllCities, getCityById, addNewCity, updateCity, removeCity } = citiesSlice.actions
+export const { getAllCities, getCityById, addNewCity, updateCity, removeCity, cancelError } = citiesSlice.actions
 
 export default citiesSlice

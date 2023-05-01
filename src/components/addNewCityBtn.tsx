@@ -1,63 +1,53 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Typography } from '@mui/material'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
-import { useAppDispatch } from 'hooks'
+import { useAppDispatch, useIsOpenControl } from 'hooks'
 import { fetchCity } from 'store/citiesSlice/citiesSlice'
-import { ICityWeather } from 'types'
+import AddNewCityModal from './addNewCityModal'
+import CustomTitle from './customTitle'
 
 const AddNewCityBtn = () => {
-  const data: ICityWeather = {
-    id: Date.now(),
-    main: {
-      feels_like: '7',
-      humidity: '7',
-      pressure: '7',
-      temp: '7',
-    },
-    name: 'Paris',
-    sys: {
-      country: '7',
-      sunrise: '7',
-      sunset: '7',
-    },
-    visibility: 7,
-    timezone: '7',
-    coord: {
-      lon: 7,
-      lat: 7,
-    },
-    clouds: {
-      all: 7,
-    },
-    code: 7,
-    weather: [
-      {
-        id: 7,
-        main: '7',
-        description: '7',
-        icon: '7',
-      },
-    ],
-    wind: {
-      speed: 7,
-    },
-  }
-
   const dispatch = useAppDispatch()
 
-  // const addNewCityHandler = () => dispatch(addNewCity({ ...data }))
-  const addNewCityHandler = () => dispatch(fetchCity({ cityName: 'Kyiv' }))
+  const { isOpen, open, close } = useIsOpenControl()
+
+  const [cityName, setCityName] = useState('')
+
+  const onChangeCityName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCityName(e.target.value)
+  }
+
+  const handleClickNewCityModalOpen = () => {
+    open()
+  }
+
+  const handleModalClose = () => {
+    dispatch(fetchCity({ cityName: cityName.trim() }))
+    close()
+    setCityName('')
+  }
 
   return (
-    <Button
-      variant={'contained'}
-      color={'info'}
-      sx={{ height: '80px', width: '300px' }}
-      onClick={addNewCityHandler}
-    >
-      <AddCircleIcon fontSize={'large'} sx={{ mr: '1rem' }} />
-      <Typography variant={'h6'}>Add city</Typography>
-    </Button>
+    <>
+      <Button
+        variant={'contained'}
+        color={'info'}
+        sx={{ height: '50px', width: '200px' }}
+        onClick={handleClickNewCityModalOpen}
+      >
+        <AddCircleIcon fontSize={'large'} sx={{ mr: '1rem' }} />
+        <Typography variant={'h6'}>Add city</Typography>
+      </Button>
+
+      <AddNewCityModal
+        text={<CustomTitle />}
+        value={cityName}
+        onChangeValue={onChangeCityName}
+        isOpen={isOpen}
+        close={close}
+        modalCloseHandler={handleModalClose}
+      />
+    </>
   )
 }
 

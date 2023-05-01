@@ -25,7 +25,6 @@ const addCityToLocalStorage = (key: string, value: string): void => {
 
 //
 const deleteCityFromLocalStorage = (key: string, value: string): void => {
-  console.log('value', value)
   if (value === '') return
 
   const foundedData = localStorage.getItem(appLocalStorageKey + key)

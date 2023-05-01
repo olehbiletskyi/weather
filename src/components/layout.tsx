@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, Suspense } from 'react'
+import React, { FC, ReactNode } from 'react'
 import Header from './header'
 import { Container } from '@mui/material'
 import AnimatePageWrapper from './animatePageWrapper'
@@ -10,14 +10,12 @@ interface IProps {
 const Layout: FC<IProps> = ({ children }) => {
   return (
     <>
-      <Suspense fallback={<>Loading...</>}>
-        <Header />
-        <AnimatePageWrapper>
-          <Container sx={{ backgroundColor: '#fff7e6' }} maxWidth={'xl'} disableGutters={true}>
-            {children}
-          </Container>
-        </AnimatePageWrapper>
-      </Suspense>
+      <Header />
+      <AnimatePageWrapper>
+        <Container maxWidth={'xl'} disableGutters={true}>
+          {children}
+        </Container>
+      </AnimatePageWrapper>
     </>
   )
 }
