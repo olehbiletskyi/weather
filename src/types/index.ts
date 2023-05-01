@@ -19,7 +19,7 @@ interface IWeatherItem {
 interface IWeather extends Array<IWeatherItem> {}
 
 interface IMain {
-  temperature: string
+  temp: string
   feels_like: string
   pressure: string
   humidity: string

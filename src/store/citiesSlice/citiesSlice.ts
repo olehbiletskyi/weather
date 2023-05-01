@@ -1,13 +1,50 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 import { ICityWeather } from 'types'
+import { fetchCityByName } from 'services'
+import { deleteCityFromLocalStorage, addCityToLocalStorage } from 'utils'
+
+const enum statusEnum {
+  IDLE = 'idle',
+  PENDING = 'pending',
+  SUCCEEDED = 'succeeded',
+  FAILED = 'failed',
+}
+
+type statusTypes = `${statusEnum}`
 
 type initialStateType = {
   cities: Array<ICityWeather>
+  status: statusTypes
+  error: any // todo
 }
 
 const initialState: initialStateType = {
   cities: [],
+  status: 'idle',
+  error: null,
 }
+
+export const fetchCity = createAsyncThunk(
+  'cities/fetchCity',
+  async (thunkArg: { cityName: string }, thunkAPI) => {
+    try {
+      const response = await fetchCityByName(thunkArg.cityName)
+      console.log('response:', response)
+      if (!response.ok) {
+        throw new Error('Server Error!') // todo
+      }
+      const data = await response.json()
+      console.log('response data:', data)
+      addCityToLocalStorage('Cities', data.name)
+
+      return data
+    } catch (error: any) {
+      // todo
+      console.log('error:', error)
+      return thunkAPI.rejectWithValue(error.message)
+    }
+  },
+)
 
 const citiesSlice = createSlice({
   name: 'cities',
@@ -27,8 +64,27 @@ const citiesSlice = createSlice({
     },
     removeCity(state, action: PayloadAction<{ id: number }>) {
       console.log(state, action)
+      const deletedCity = state.cities.find((item) => item.id === action.payload.id)
       state.cities = state.cities.filter((item) => item.id !== action.payload.id)
+      deleteCityFromLocalStorage('Cities', deletedCity?.name || '')
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchCity.fulfilled, (state, action) => {
+      state.cities.push(action.payload)
+      state.status = 'succeeded'
+      state.error = null
+    })
+    builder.addCase(fetchCity.pending, (state, action) => {
+      state.status = 'pending'
+      state.error = null
+    })
+    builder.addCase(fetchCity.rejected, (state, action) => {
+      console.log('state:', state)
+      console.log('action:', action)
+      state.status = 'failed'
+      state.error = action.payload
+    })
   },
 })
 

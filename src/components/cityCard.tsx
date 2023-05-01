@@ -1,41 +1,43 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Grid, Typography, Card, CardContent, CardActions, Button } from '@mui/material'
 import { paths } from 'constants/paths'
 import { useAppDispatch } from 'hooks'
 import { removeCity } from 'store/citiesSlice/citiesSlice'
+import { ICityWeather } from 'types'
 
 interface IProps {
-  id: number
-  name: string
+  data: ICityWeather
 }
 
-const CityCard = ({ id, name }: IProps) => {
-  console.log(name)
+const CityCard = ({ data }: IProps) => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
 
   // const [cityId, setCityId] = useState(id)
 
   const goToDetailPage = () => {
-    navigate(`/${paths.DETAIL}?cityId=${id}&cityName=${name}`)
+    navigate(`/${paths.DETAIL}?cityId=${data.id}&cityName=${data.name}`)
   }
-  const removeCityHandler = () => dispatch(removeCity({ id }))
+  const removeCityHandler = () => dispatch(removeCity({ id: data.id }))
 
   return (
     <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
       <Card>
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color='text.secondary' gutterBottom>
-            City: {id % 1000}
+            City: {data.id % 1000}
           </Typography>
           <Typography variant='h5' component='div'>
-            Paris
+            {data.name}
           </Typography>
           <Typography sx={{ mb: 1.5 }} color='text.secondary'>
-            France
+            {data.sys.country}
           </Typography>
-          <Typography variant='body2'>It will be sunny and hot. No windy.</Typography>
+          <Typography variant='body2'>{data.main.temp}</Typography>
+          <Typography variant='body2'>{data.main.feels_like}</Typography>
+          <Typography variant='body2'>{data.weather[0].description}</Typography>
+          <Typography variant='body2'>{data.main.humidity}</Typography>
         </CardContent>
         <CardActions>
           <Button size='small' onClick={goToDetailPage}>

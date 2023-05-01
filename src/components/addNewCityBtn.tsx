@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Typography } from '@mui/material'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import { useAppDispatch } from 'hooks'
-import { addNewCity } from 'store/citiesSlice/citiesSlice'
+import { fetchCity } from 'store/citiesSlice/citiesSlice'
 import { ICityWeather } from 'types'
 
 const AddNewCityBtn = () => {
@@ -12,7 +12,7 @@ const AddNewCityBtn = () => {
       feels_like: '7',
       humidity: '7',
       pressure: '7',
-      temperature: '7',
+      temp: '7',
     },
     name: 'Paris',
     sys: {
@@ -45,7 +45,8 @@ const AddNewCityBtn = () => {
 
   const dispatch = useAppDispatch()
 
-  const addNewCityHandler = () => dispatch(addNewCity({ ...data }))
+  // const addNewCityHandler = () => dispatch(addNewCity({ ...data }))
+  const addNewCityHandler = () => dispatch(fetchCity({ cityName: 'Kyiv' }))
 
   return (
     <Button
