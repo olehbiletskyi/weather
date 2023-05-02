@@ -49,8 +49,12 @@ const AddNewCityModal = ({
           />
         </DialogContent>
         <DialogActions sx={{ justifyContent: 'space-between', paddingX: '18px' }}>
-          <Button onClick={close} color={'error'}>Cancel</Button>
-          <Button onClick={modalCloseHandler} variant={'contained'} color={'success'}>Find and subscribe</Button>
+          <Button onClick={close} color={'error'}>
+            Cancel
+          </Button>
+          <Button onClick={modalCloseHandler} variant={'contained'} color={'success'}>
+            Find and subscribe
+          </Button>
         </DialogActions>
       </Dialog>
     </>

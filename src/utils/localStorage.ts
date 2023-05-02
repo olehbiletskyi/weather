@@ -3,8 +3,6 @@ const appLocalStorageKey = 'CurrentWeather'
 //
 const getCitiesFromLocalStorage = (key: string): Array<string> => {
   const returnedData = localStorage.getItem(appLocalStorageKey + key)
-  console.log('returnedData:', returnedData) // todo
-
   return returnedData ? JSON.parse(returnedData) : []
 }
 

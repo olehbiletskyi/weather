@@ -15,7 +15,7 @@ interface IProps {
   handleClose: () => void
 }
 
-const ErrorAlertDialog = ({ title = 'Server Error', message, isOpen, handleClose }: IProps) => {
+const ErrorAlertDialog = ({ title = 'Error', message, isOpen, handleClose }: IProps) => {
   return (
     <Dialog open={isOpen}>
       <DialogTitle variant={'h6'} sx={{ fontWeight: 700 }}>

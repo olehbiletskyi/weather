@@ -9,13 +9,11 @@ import store from 'store/store'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
-  <React.StrictMode>
-    <ReduxProvider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ReduxProvider>
-  </React.StrictMode>,
+  <ReduxProvider store={store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </ReduxProvider>,
 )
 
 reportWebVitals()

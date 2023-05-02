@@ -4,4 +4,11 @@ import {
   deleteCityFromLocalStorage,
 } from './localStorage'
 
-export { getCitiesFromLocalStorage, addCityToLocalStorage, deleteCityFromLocalStorage }
+import parseTimestamp from './parseTimestamp'
+
+export {
+  getCitiesFromLocalStorage,
+  addCityToLocalStorage,
+  deleteCityFromLocalStorage,
+  parseTimestamp,
+}
