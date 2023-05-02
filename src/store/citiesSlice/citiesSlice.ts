@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ICityWeather } from 'types'
 import { fetchCityByName } from 'services'
-import { addCityToLocalStorage, deleteCityFromLocalStorage } from 'utils'
+import { addCityToLocalStorage, deleteCityFromLocalStorage, getCitiesFromLocalStorage } from 'utils'
 
 const enum statusEnum {
   IDLE = 'idle',
@@ -13,19 +13,21 @@ const enum statusEnum {
 type statusTypes = `${statusEnum}`
 
 type initialStateType = {
+  citiesController: Array<string>
   cities: Array<ICityWeather>
   status: statusTypes
   error: any // todo
 }
 
 const initialState: initialStateType = {
+  citiesController: [],
   cities: [],
   status: 'idle',
   error: null,
 }
 
-export const fetchCity = createAsyncThunk(
-  'cities/fetchCity',
+const fetchCityAsync = createAsyncThunk(
+  'cities/fetchCityAsync',
   async (thunkArg: { cityName: string }, thunkAPI) => {
     try {
       const response = await fetchCityByName(thunkArg.cityName)
@@ -33,8 +35,8 @@ export const fetchCity = createAsyncThunk(
         throw new Error('Server Error!') // todo
       }
       const data = await response.json()
-      addCityToLocalStorage('Cities', data.name)
-
+      thunkAPI.dispatch(addCity({ ...data }))
+      // addCityToLocalStorage('Cities', data.name)
       return data
     } catch (error: any) {
       // todo
@@ -43,15 +45,17 @@ export const fetchCity = createAsyncThunk(
   },
 )
 
-export const updateCity = createAsyncThunk(
-  'updateCities/fetchCity',
+const updateCityAsync = createAsyncThunk(
+  'cities/updateCityAsync',
   async (thunkArg: { cityName: string }, thunkAPI) => {
     try {
       const response = await fetchCityByName(thunkArg.cityName)
       if (!response.ok) {
         throw new Error('Server Error!') // todo
       }
-      return await response.json()
+      const data = await response.json()
+      thunkAPI.dispatch(updateCity({ ...data }))
+      return data
     } catch (error: any) {
       // todo
       return thunkAPI.rejectWithValue(error.message)
@@ -59,14 +63,34 @@ export const updateCity = createAsyncThunk(
   },
 )
 
+// const fetchDetailForecast = createAsyncThunk() // todo
+
 const citiesSlice = createSlice({
   name: 'cities',
   initialState,
   reducers: {
+    initializeCitiesController(state, action) {
+      const citiesFromLocalStorage = getCitiesFromLocalStorage('Cities')
+      console.log('cities while init Controller', citiesFromLocalStorage)
+      if(citiesFromLocalStorage) {
+        state.citiesController = citiesFromLocalStorage
+      }
+    },
+    addCity(state, action) {
+      state.cities.push(action.payload)
+      state.citiesController.push(action.payload.name)
+      addCityToLocalStorage('Cities', action.payload.name)
+    },
+    updateCity(state, action) {
+      state.cities.forEach((item) => (item.id !== action.payload.id ? item : action.payload))
+    },
     removeCity(state, action: PayloadAction<{ id: number }>) {
       const deletedCity = state.cities.find((item) => item.id === action.payload.id)
       state.cities = state.cities.filter((item) => item.id !== action.payload.id)
-      deleteCityFromLocalStorage('Cities', deletedCity?.name || '')
+      if(deletedCity) {
+        deleteCityFromLocalStorage('Cities', deletedCity?.name)
+      }
+
     },
     cancelError(state, action) {
       state.error = null
@@ -74,35 +98,37 @@ const citiesSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchCity.fulfilled, (state, action) => {
-      state.cities.push(action.payload)
-      state.status = 'succeeded'
-      state.error = null
-    })
-    builder.addCase(fetchCity.pending, (state, action) => {
+    // fetchCityAsync
+    builder.addCase(fetchCityAsync.pending, (state, action) => {
       state.status = 'pending'
       state.error = null
     })
-    builder.addCase(fetchCity.rejected, (state, action) => {
+    builder.addCase(fetchCityAsync.fulfilled, (state, action) => {
+      state.status = 'succeeded'
+      state.error = null
+    })
+    builder.addCase(fetchCityAsync.rejected, (state, action) => {
       state.status = 'failed'
       state.error = action.payload
     })
-    builder.addCase(updateCity.fulfilled, (state, action) => {
-      state.cities.forEach((item) => (item.id === action.payload.id ? item : action.payload))
-      state.status = 'succeeded'
-      state.error = null
-    })
-    builder.addCase(updateCity.pending, (state, action) => {
+    // updateCityAsync
+    builder.addCase(updateCityAsync.pending, (state, action) => {
       state.status = 'pending'
       state.error = null
     })
-    builder.addCase(updateCity.rejected, (state, action) => {
+    builder.addCase(updateCityAsync.fulfilled, (state, action) => {
+      state.status = 'succeeded'
+      state.error = null
+    })
+    builder.addCase(updateCityAsync.rejected, (state, action) => {
       state.status = 'failed'
       state.error = action.payload
     })
   },
 })
 
-export const { removeCity, cancelError } = citiesSlice.actions
+export { fetchCityAsync,updateCityAsync }
+
+export const { initializeCitiesController, addCity, updateCity, removeCity, cancelError } = citiesSlice.actions
 
 export default citiesSlice

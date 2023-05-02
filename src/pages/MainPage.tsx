@@ -3,23 +3,30 @@ import { Box, Grid, Typography } from '@mui/material'
 import { AddNewCityBtn, CityCard, ErrorAlertDialog, Loader } from 'components'
 import { useAppDispatch, useAppSelector } from 'hooks'
 import { allCitiesSelector } from 'store/citiesSelector/citiesSelector'
-import { cancelError, fetchCity } from 'store/citiesSlice/citiesSlice'
-import { getCitiesFromLocalStorage } from 'utils'
+import { initializeCitiesController, cancelError, fetchCityAsync } from 'store/citiesSlice/citiesSlice'
 
 const MainPage: FC = () => {
   const [showErrorMsg, setShowErrorMsg] = useState(false)
 
   const dispatch = useAppDispatch()
 
-  const { cities, status, error } = useAppSelector(allCitiesSelector) // get all cities from redux
+  const { citiesController, cities, status, error } = useAppSelector(allCitiesSelector) // get all cities from redux
+
+  console.log('citiesController', citiesController)
 
   useEffect(() => {
-    console.log('render')
-    const citiesFromLocalStorage = getCitiesFromLocalStorage('Cities')
-    citiesFromLocalStorage.forEach((item) => {
-      dispatch(fetchCity({ cityName: item })) // todo ??????????
-    })
+
+    dispatch(initializeCitiesController({}))
   }, [])
+
+
+  useEffect(() => {
+    if(citiesController) {
+      citiesController.forEach((item) => {
+        dispatch(fetchCityAsync({ cityName: item }))
+      })
+    }
+  }, [citiesController])
 
   useEffect(() => {
     if (error) {
@@ -29,7 +36,7 @@ const MainPage: FC = () => {
 
   const handleCloseErrorMsg = () => {
     setShowErrorMsg(false)
-    dispatch(cancelError({ id: '007' }))
+    dispatch(cancelError({}))
   }
 
   return (

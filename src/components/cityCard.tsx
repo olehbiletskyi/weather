@@ -4,7 +4,7 @@ import { Grid, Typography, Card, CardContent, CardActions, Button } from '@mui/m
 import CachedIcon from '@mui/icons-material/Cached'
 import { paths } from 'constants/paths'
 import { useAppDispatch } from 'hooks'
-import { removeCity, updateCity } from 'store/citiesSlice/citiesSlice'
+import { removeCity, updateCityAsync } from 'store/citiesSlice/citiesSlice'
 import { ICityWeather } from 'types'
 
 interface IProps {
@@ -22,7 +22,7 @@ const CityCard = ({ data }: IProps) => {
   const removeCityHandler = () => dispatch(removeCity({ id: data.id }))
 
   const updateCityWeatherInfo = () => {
-    dispatch(updateCity({ cityName: data.name }))
+    dispatch(updateCityAsync({ cityName: data.name }))
   }
 
   return (

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, Typography } from '@mui/material'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
 import { useAppDispatch, useIsOpenControl } from 'hooks'
-import { fetchCity } from 'store/citiesSlice/citiesSlice'
+import { fetchCityAsync } from 'store/citiesSlice/citiesSlice'
 import AddNewCityModal from './addNewCityModal'
 import CustomTitle from './customTitle'
 
@@ -21,8 +21,8 @@ const AddNewCityBtn = () => {
     open()
   }
 
-  const handleModalClose = () => {
-    dispatch(fetchCity({ cityName: cityName.trim() }))
+  const handleSubmit = () => {
+    dispatch(fetchCityAsync({ cityName: cityName.trim() }))
     close()
     setCityName('')
   }
@@ -45,7 +45,7 @@ const AddNewCityBtn = () => {
         onChangeValue={onChangeCityName}
         isOpen={isOpen}
         close={close}
-        modalCloseHandler={handleModalClose}
+        submitHandler={handleSubmit}
       />
     </>
   )

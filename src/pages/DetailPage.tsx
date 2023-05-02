@@ -13,7 +13,7 @@ import WbSunnyIcon from '@mui/icons-material/WbSunny'
 import WbTwilightIcon from '@mui/icons-material/WbTwilight'
 import { useAppDispatch, useAppSelector } from 'hooks'
 import { cityByIdSelector } from 'store/citiesSelector/citiesSelector'
-import { fetchCity } from 'store/citiesSlice/citiesSlice'
+import { fetchCityAsync } from 'store/citiesSlice/citiesSlice'
 import { IndicatorItemWrapper, Loader } from 'components'
 import { parseTimestamp } from 'utils'
 
@@ -27,7 +27,7 @@ const DetailPage: FC = () => {
   const city = useAppSelector(cityByIdSelector(cityIdFromSearchParams))
 
   if (!city) {
-    dispatch(fetchCity({ cityName: cityNameFromSearchParams }))
+    dispatch(fetchCityAsync({ cityName: cityNameFromSearchParams }))
     return <Loader />
   }
 

@@ -16,7 +16,7 @@ interface IProps {
   onChangeValue: (e: React.ChangeEvent<HTMLInputElement>) => void
   isOpen: boolean
   close: () => void
-  modalCloseHandler: () => void
+  submitHandler: () => void
   label?: string
 }
 
@@ -27,7 +27,7 @@ const AddNewCityModal = ({
   onChangeValue,
   isOpen,
   close,
-  modalCloseHandler,
+  submitHandler,
   label = 'Name',
 }: IProps) => {
   return (
@@ -52,7 +52,7 @@ const AddNewCityModal = ({
           <Button onClick={close} color={'error'}>
             Cancel
           </Button>
-          <Button onClick={modalCloseHandler} variant={'contained'} color={'success'}>
+          <Button onClick={submitHandler} variant={'contained'} color={'success'}>
             Find and subscribe
           </Button>
         </DialogActions>
