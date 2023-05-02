@@ -15,14 +15,14 @@ interface IProps {
   handleClose: () => void
 }
 
-const ErrorAlertDialog = ({ title = 'Error', message, isOpen, handleClose }: IProps) => {
+const ErrorAlertDialog = ({ title = 'Error:', message = 'City not found or an error occurred!', isOpen, handleClose }: IProps) => {
   return (
     <Dialog open={isOpen}>
-      <DialogTitle variant={'h6'} sx={{ fontWeight: 700 }}>
+      <DialogTitle variant={'h5'} sx={{ fontWeight: 500 }} >
         {title}
       </DialogTitle>
-      <DialogContent>
-        <DialogContentText variant={'body1'}>{message}</DialogContentText>
+      <DialogContent sx={{ minWidth: '420px' }}>
+        <DialogContentText variant={'h5'} color={'error'}>{message}</DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Ok</Button>

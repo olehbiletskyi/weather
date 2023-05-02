@@ -12,17 +12,20 @@ const MainPage: FC = () => {
 
   const { citiesController, cities, status, error } = useAppSelector(allCitiesSelector) // get all cities from redux
 
-  console.log('citiesController', citiesController)
+  console.log('citiesController:', citiesController)
+
+  useEffect(() => console.log('RENDER'), [])
 
   useEffect(() => {
-
     dispatch(initializeCitiesController({}))
   }, [])
 
 
   useEffect(() => {
     if(citiesController) {
-      citiesController.forEach((item) => {
+      const citiesControllerCopy = [...citiesController]
+      console.log('citiesControllerCopy', citiesControllerCopy)
+      citiesControllerCopy.forEach((item) => {
         dispatch(fetchCityAsync({ cityName: item }))
       })
     }
@@ -54,7 +57,7 @@ const MainPage: FC = () => {
 
       {error && (
         <ErrorAlertDialog
-          message={'City not found or an error occurred!'}
+          message={error}
           isOpen={showErrorMsg}
           handleClose={handleCloseErrorMsg}
         />

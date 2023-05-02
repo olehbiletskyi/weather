@@ -2,6 +2,8 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ICityWeather } from 'types'
 import { fetchCityByName } from 'services'
 import { addCityToLocalStorage, deleteCityFromLocalStorage, getCitiesFromLocalStorage } from 'utils'
+import { AppThunk } from '../store'
+import { BaseThunkAPI } from '@reduxjs/toolkit/dist/createAsyncThunk'
 
 const enum statusEnum {
   IDLE = 'idle',
@@ -12,14 +14,14 @@ const enum statusEnum {
 
 type statusTypes = `${statusEnum}`
 
-type initialStateType = {
+type stateType = {
   citiesController: Array<string>
   cities: Array<ICityWeather>
   status: statusTypes
   error: any // todo
 }
 
-const initialState: initialStateType = {
+const initialState: stateType = {
   citiesController: [],
   cities: [],
   status: 'idle',
@@ -28,18 +30,25 @@ const initialState: initialStateType = {
 
 const fetchCityAsync = createAsyncThunk(
   'cities/fetchCityAsync',
-  async (thunkArg: { cityName: string }, thunkAPI) => {
+  async (thunkArg: { cityName: string }, thunkAPI: any) => {
     try {
-      const response = await fetchCityByName(thunkArg.cityName)
-      if (!response.ok) {
-        throw new Error('Server Error!') // todo
+      const state = thunkAPI.getState()
+      console.log(state?.cities?.cities)
+      const isHasCity = state?.cities?.cities.some((item: ICityWeather) => item.name === thunkArg.cityName)
+      console.log(isHasCity)
+      if(!isHasCity) {
+        console.log('fetch!!!!!')
+        const response = await fetchCityByName(thunkArg.cityName)
+        if (!response.ok) {
+          throw new Error('Server error or the city was not found!')
+        }
+        const data = await response.json()
+        thunkAPI.dispatch(addCity({ ...data }))
+        return data
       }
-      const data = await response.json()
-      thunkAPI.dispatch(addCity({ ...data }))
-      // addCityToLocalStorage('Cities', data.name)
-      return data
-    } catch (error: any) {
-      // todo
+
+
+    } catch (error: any) { // todo
       return thunkAPI.rejectWithValue(error.message)
     }
   },
@@ -71,25 +80,34 @@ const citiesSlice = createSlice({
   reducers: {
     initializeCitiesController(state, action) {
       const citiesFromLocalStorage = getCitiesFromLocalStorage('Cities')
-      console.log('cities while init Controller', citiesFromLocalStorage)
       if(citiesFromLocalStorage) {
         state.citiesController = citiesFromLocalStorage
       }
     },
     addCity(state, action) {
-      state.cities.push(action.payload)
-      state.citiesController.push(action.payload.name)
-      addCityToLocalStorage('Cities', action.payload.name)
+      const isHasAlreadyNewCityAtStore = state.cities.some(item => item.id === action.payload.id)
+      if(!isHasAlreadyNewCityAtStore) {
+        state.cities.push(action.payload)
+        if(!state.citiesController.includes(action.payload.name)) {
+          state.citiesController.push(action.payload.name)
+        }
+        addCityToLocalStorage('Cities', action.payload.name)
+      }
     },
     updateCity(state, action) {
       state.cities.forEach((item) => (item.id !== action.payload.id ? item : action.payload))
     },
     removeCity(state, action: PayloadAction<{ id: number }>) {
       const deletedCity = state.cities.find((item) => item.id === action.payload.id)
-      state.cities = state.cities.filter((item) => item.id !== action.payload.id)
       if(deletedCity) {
+        state.cities = state.cities.filter((item) => item.id !== action.payload.id)
+        state.citiesController = state.citiesController.filter(item => item !== deletedCity.name)
         deleteCityFromLocalStorage('Cities', deletedCity?.name)
       }
+    },
+    generateError(state, action) {
+      state.error = action.payload.title
+      state.status = 'failed'
 
     },
     cancelError(state, action) {
@@ -129,6 +147,6 @@ const citiesSlice = createSlice({
 
 export { fetchCityAsync,updateCityAsync }
 
-export const { initializeCitiesController, addCity, updateCity, removeCity, cancelError } = citiesSlice.actions
+export const { initializeCitiesController, addCity, updateCity, removeCity, generateError, cancelError } = citiesSlice.actions
 
 export default citiesSlice

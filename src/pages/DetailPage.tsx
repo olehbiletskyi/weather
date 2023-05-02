@@ -7,10 +7,10 @@ import AttributionIcon from '@mui/icons-material/Attribution'
 import CloudQueueIcon from '@mui/icons-material/CloudQueue'
 import InvertColorsIcon from '@mui/icons-material/InvertColors'
 import TireRepairIcon from '@mui/icons-material/TireRepair'
-import DirectionsCarIcon from '@mui/icons-material/DirectionsCar'
 import AirIcon from '@mui/icons-material/Air'
 import WbSunnyIcon from '@mui/icons-material/WbSunny'
 import WbTwilightIcon from '@mui/icons-material/WbTwilight'
+import VisibilityIcon from '@mui/icons-material/Visibility'
 import { useAppDispatch, useAppSelector } from 'hooks'
 import { cityByIdSelector } from 'store/citiesSelector/citiesSelector'
 import { fetchCityAsync } from 'store/citiesSlice/citiesSlice'
@@ -18,8 +18,9 @@ import { IndicatorItemWrapper, Loader } from 'components'
 import { parseTimestamp } from 'utils'
 
 const DetailPage: FC = () => {
-  const [searchParams] = useSearchParams()
   const dispatch = useAppDispatch()
+
+  const [searchParams] = useSearchParams()
 
   const cityIdFromSearchParams = searchParams.get('cityId') || ''
   const cityNameFromSearchParams = searchParams.get('cityName') || ''
@@ -56,7 +57,7 @@ const DetailPage: FC = () => {
       </IndicatorItemWrapper>
 
       <IndicatorItemWrapper>
-        <AttributionIcon color={'success'} sx={{ width: '40px', height: '40px', mr: '5px' }} />
+        <AttributionIcon color={'success'} sx={{ width: '40px', height: '40px', mr: 2 }} />
         <Typography variant='h5' sx={{ fontStyle: 'italic' }} component='div'>
           Real feel: {city?.main?.feels_like}&#8451;
         </Typography>
@@ -84,7 +85,7 @@ const DetailPage: FC = () => {
       </IndicatorItemWrapper>
 
       <IndicatorItemWrapper>
-        <DirectionsCarIcon color={'info'} sx={{ width: '40px', height: '40px', mr: 2 }} />
+        <VisibilityIcon color={'success'} sx={{ width: '40px', height: '40px', mr: 2 }} />
         <Typography variant='h5' component='div'>
           Visibility: {city?.visibility} m.
         </Typography>
@@ -105,7 +106,7 @@ const DetailPage: FC = () => {
       </IndicatorItemWrapper>
 
       <IndicatorItemWrapper>
-        <WbTwilightIcon sx={{ width: '40px', height: '40px', mr: 2, color: '#bd7c00' }} />
+        <WbTwilightIcon sx={{ width: '40px', height: '40px', mr: 2, color: '#FA5F55' }} />
         <Typography variant='h5' component='div'>
           Sunset: {parseTimestamp(city?.sys?.sunset)} <i>(Kyiv timezone)</i>
         </Typography>

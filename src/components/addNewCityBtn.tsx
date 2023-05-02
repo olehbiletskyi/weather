@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { Button, Typography } from '@mui/material'
 import AddCircleIcon from '@mui/icons-material/AddCircle'
-import { useAppDispatch, useIsOpenControl } from 'hooks'
-import { fetchCityAsync } from 'store/citiesSlice/citiesSlice'
+import { useAppDispatch, useAppSelector, useIsOpenControl } from 'hooks'
+import { fetchCityAsync, generateError } from 'store/citiesSlice/citiesSlice'
+import { allCitiesSelector } from 'store/citiesSelector/citiesSelector'
 import AddNewCityModal from './addNewCityModal'
 import CustomTitle from './customTitle'
 
@@ -11,20 +12,25 @@ const AddNewCityBtn = () => {
 
   const { isOpen, open, close } = useIsOpenControl()
 
+  const { cities } = useAppSelector(allCitiesSelector)
+
   const [cityName, setCityName] = useState('')
 
   const onChangeCityName = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCityName(e.target.value)
   }
 
-  const handleClickNewCityModalOpen = () => {
-    open()
-  }
-
   const handleSubmit = () => {
-    dispatch(fetchCityAsync({ cityName: cityName.trim() }))
-    close()
-    setCityName('')
+    const isHasCityAtStore = cities.some(item => item.name === cityName.trim())
+    if(!isHasCityAtStore) {
+      dispatch(fetchCityAsync({ cityName: cityName.trim() }))
+      close()
+      setCityName('')
+    } else {
+      dispatch(generateError({ title: 'The city has already been added!' }))
+    }
+
+
   }
 
   return (
@@ -33,7 +39,7 @@ const AddNewCityBtn = () => {
         variant={'contained'}
         color={'info'}
         sx={{ height: '50px', width: '200px' }}
-        onClick={handleClickNewCityModalOpen}
+        onClick={open}
       >
         <AddCircleIcon fontSize={'large'} sx={{ mr: '1rem' }} />
         <Typography variant={'h6'}>Add city</Typography>
