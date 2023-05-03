@@ -3,7 +3,7 @@ const appLocalStorageKey = 'CurrentWeather'
 //
 const getCitiesFromLocalStorage = (key: string): Array<string> => {
   const returnedData = localStorage.getItem(appLocalStorageKey + key)
-  if(returnedData) {
+  if (returnedData) {
     return JSON.parse(returnedData)
   } else {
     return []
@@ -12,7 +12,7 @@ const getCitiesFromLocalStorage = (key: string): Array<string> => {
 
 //
 const addCityToLocalStorage = (key: string, value: string): void => {
-  if(typeof value !== 'string') return
+  if (typeof value !== 'string') return
   const foundedData = localStorage.getItem(appLocalStorageKey + key)
 
   if (foundedData) {

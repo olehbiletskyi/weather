@@ -1,21 +1,44 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { fetchCityByName } from 'services'
+import { fetchCityByName, fetchDetailForecast } from 'services'
 import { statuses } from 'constants/statuses'
 import { addCityToLocalStorage, deleteCityFromLocalStorage, getCitiesFromLocalStorage } from 'utils'
-import { ICityWeather } from 'types'
+import { ICityWeather, ICoordinates } from 'types'
+
+export interface IItem
+  extends Pick<ICityWeather, 'clouds' | 'main' | 'sys' | 'visibility' | 'weather' | 'wind'> {
+  dt: number
+  dt_txt: string
+}
 
 type statusTypes = `${statuses}`
 
 type stateType = {
   citiesController: Array<string>
   cities: Array<ICityWeather>
+  detailForecast: detailForecastType
   status: statusTypes
   error: any
+}
+
+type detailForecastType = {
+  cityName: string
+  cityId: number
+  list: Array<{
+    dt: number
+    dt_txt: string
+    temperature: number
+    feelsLike: number
+  }>
 }
 
 const initialState: stateType = {
   citiesController: [],
   cities: [],
+  detailForecast: {
+    cityId: 0,
+    cityName: '',
+    list: [],
+  },
   status: statuses.IDLE,
   error: null,
 }
@@ -66,7 +89,22 @@ const updateCityAsync = createAsyncThunk(
   },
 )
 
-// const fetchDetailForecast = createAsyncThunk() // todo for future
+const fetchDetailForecastAsync = createAsyncThunk(
+  'cities/fetchDetailForecastAsync',
+  async (thunkArg: { coords: ICoordinates }, thunkAPI: any) => {
+    try {
+      const response = await fetchDetailForecast(thunkArg.coords)
+      if (!response.ok) {
+        throw new Error('Server Error!')
+      }
+      const data = await response.json()
+      thunkAPI.dispatch(addDetailForecast({ ...data }))
+      return data
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message)
+    }
+  },
+)
 
 const citiesSlice = createSlice({
   name: 'cities',
@@ -98,6 +136,18 @@ const citiesSlice = createSlice({
         state.citiesController = state.citiesController.filter((item) => item !== deletedCity.name)
         deleteCityFromLocalStorage('Cities', deletedCity?.name)
       }
+    },
+    addDetailForecast(state, action) {
+      state.detailForecast.cityName = action.payload.city.name
+      state.detailForecast.cityId = action.payload.city.id
+      state.detailForecast.list = action.payload.list.map((item: IItem) => {
+        return {
+          dt: item.dt,
+          dt_txt: item.dt_txt,
+          temperature: item.main.temp,
+          feelsLike: item.main.temp,
+        }
+      })
     },
     generateError(state, action) {
       state.error = action.payload.title
@@ -135,16 +185,30 @@ const citiesSlice = createSlice({
       state.status = statuses.FAILED
       state.error = action.payload
     })
+    // updateCityAsync
+    builder.addCase(fetchDetailForecastAsync.pending, (state, action) => {
+      state.status = statuses.PENDING
+      state.error = null
+    })
+    builder.addCase(fetchDetailForecastAsync.fulfilled, (state, action) => {
+      state.status = statuses.SUCCEEDED
+      state.error = null
+    })
+    builder.addCase(fetchDetailForecastAsync.rejected, (state, action) => {
+      state.status = statuses.FAILED
+      state.error = action.payload
+    })
   },
 })
 
-export { fetchCityAsync, updateCityAsync }
+export { fetchCityAsync, updateCityAsync, fetchDetailForecastAsync }
 
 export const {
   initializeCitiesController,
   addCity,
   updateCity,
   removeCity,
+  addDetailForecast,
   generateError,
   cancelError,
 } = citiesSlice.actions

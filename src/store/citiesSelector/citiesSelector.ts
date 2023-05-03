@@ -10,4 +10,7 @@ const cityByIdSelector = (id: number | string) =>
     return cities.cities.find((item) => item.id === +id)
   })
 
-export { allCitiesSelector, cityByIdSelector }
+// get detail forecast
+const getDetailForecastSelector = (state: RootState) => state.cities.detailForecast
+
+export { allCitiesSelector, cityByIdSelector, getDetailForecastSelector }

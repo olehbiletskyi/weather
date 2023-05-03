@@ -1,5 +1,4 @@
 const localStorageMock = (function () {
-    
   let storage: any = {}
 
   return {
@@ -23,14 +22,14 @@ Object.defineProperty(window, 'localStorage', { value: localStorageMock })
 const appLocalStorageKey = 'CurrentWeather'
 const getCitiesFromLocalStorage = (key: string): Array<string> => {
   const returnedData = window.localStorage.getItem(appLocalStorageKey + key)
-  if(returnedData) {
+  if (returnedData) {
     return JSON.parse(returnedData)
   } else {
     return []
   }
 }
 const addCityToLocalStorage = (key: string, value: any): void => {
-  if(typeof value !== 'string') return
+  if (typeof value !== 'string') return
   const foundedData = window.localStorage.getItem(appLocalStorageKey + key)
 
   if (foundedData) {
@@ -55,7 +54,6 @@ const deleteCityFromLocalStorage = (key: string, value: any): void => {
 }
 
 describe('testing local storage methods', () => {
-
   beforeEach(() => {
     window.localStorage.clear()
   })
@@ -69,14 +67,18 @@ describe('testing local storage methods', () => {
     addCityToLocalStorage('Cities', mockValue3)
     getCitiesFromLocalStorage('Cities')
     const mockJson = ['BBB', 'CCC', 'DDD']
-    expect(window.localStorage.getItem(appLocalStorageKey + 'Cities')).toEqual(JSON.stringify(mockJson))
+    expect(window.localStorage.getItem(appLocalStorageKey + 'Cities')).toEqual(
+      JSON.stringify(mockJson),
+    )
   })
 
   test('value is added into EMPTY local storage', () => {
     const mockValue = 'AAA'
     addCityToLocalStorage('Cities', mockValue)
     const mockJson = ['AAA']
-    expect(window.localStorage.getItem(appLocalStorageKey + 'Cities')).toEqual(JSON.stringify(mockJson))
+    expect(window.localStorage.getItem(appLocalStorageKey + 'Cities')).toEqual(
+      JSON.stringify(mockJson),
+    )
   })
 
   test('value is added into NOT EMPTY local storage', () => {
@@ -85,7 +87,9 @@ describe('testing local storage methods', () => {
     addCityToLocalStorage('Cities', mockValue1)
     addCityToLocalStorage('Cities', mockValue2)
     const mockJson = ['XXX', 'YYY']
-    expect(window.localStorage.getItem(appLocalStorageKey + 'Cities')).toEqual(JSON.stringify(mockJson))
+    expect(window.localStorage.getItem(appLocalStorageKey + 'Cities')).toEqual(
+      JSON.stringify(mockJson),
+    )
   })
 
   test('value is added into NOT EMPTY local storage with wrong value', () => {
@@ -94,7 +98,9 @@ describe('testing local storage methods', () => {
     addCityToLocalStorage('Cities', mockValue1)
     addCityToLocalStorage('Cities', mockValue2)
     const mockJson = ['123']
-    expect(window.localStorage.getItem(appLocalStorageKey + 'Cities')).toEqual(JSON.stringify(mockJson))
+    expect(window.localStorage.getItem(appLocalStorageKey + 'Cities')).toEqual(
+      JSON.stringify(mockJson),
+    )
   })
 
   test('value is added into NOT EMPTY local storage where it is already', () => {
@@ -104,7 +110,9 @@ describe('testing local storage methods', () => {
     addCityToLocalStorage('Cities', mockValue2)
     addCityToLocalStorage('Cities', mockValue2)
     const mockJson = ['111', '222']
-    expect(window.localStorage.getItem(appLocalStorageKey + 'Cities')).toEqual(JSON.stringify(mockJson))
+    expect(window.localStorage.getItem(appLocalStorageKey + 'Cities')).toEqual(
+      JSON.stringify(mockJson),
+    )
   })
 
   test('deleting single value from local storage', () => {
@@ -116,7 +124,9 @@ describe('testing local storage methods', () => {
     addCityToLocalStorage('Cities', mockValue3)
     deleteCityFromLocalStorage('Cities', 'EEE')
     const mockJson = ['FFF', 'GGG']
-    expect(window.localStorage.getItem(appLocalStorageKey + 'Cities')).toEqual(JSON.stringify(mockJson))
+    expect(window.localStorage.getItem(appLocalStorageKey + 'Cities')).toEqual(
+      JSON.stringify(mockJson),
+    )
   })
 
   test('deleting single value from local storage with wrong value', () => {
@@ -133,7 +143,8 @@ describe('testing local storage methods', () => {
     deleteCityFromLocalStorage('Cities', mockValue5)
     deleteCityFromLocalStorage('Cities', mockValue6)
     const mockJson = ['7', '8', '9']
-    expect(window.localStorage.getItem(appLocalStorageKey + 'Cities')).toEqual(JSON.stringify(mockJson))
+    expect(window.localStorage.getItem(appLocalStorageKey + 'Cities')).toEqual(
+      JSON.stringify(mockJson),
+    )
   })
-
 })
