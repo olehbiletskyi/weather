@@ -7,7 +7,7 @@ interface IProps {
   children: JSX.Element
 }
 
-const Modal = ({ isOpen, close, title,  children }: IProps) => {
+const Modal = ({ isOpen, close, title, children }: IProps) => {
   return (
     <Dialog open={isOpen} onClose={close}>
       <DialogTitle>{title}</DialogTitle>

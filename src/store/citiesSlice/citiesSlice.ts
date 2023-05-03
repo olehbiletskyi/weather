@@ -10,7 +10,7 @@ type stateType = {
   citiesController: Array<string>
   cities: Array<ICityWeather>
   status: statusTypes
-  error: any // todo
+  error: any
 }
 
 const initialState: stateType = {
@@ -23,6 +23,10 @@ const initialState: stateType = {
 const fetchCityAsync = createAsyncThunk(
   'cities/fetchCityAsync',
   async (thunkArg: { cityName: string }, thunkAPI: any) => {
+    // why any?  - cause there is some troubles with thunkApi
+    // https://redux-toolkit.js.org/usage/usage-with-typescript
+    // (`Also, as TS cannot mix explicit and inferred generic parameters,
+    // from this point on you'll have to define the Returned and ThunkArg generic parameter as well.`)
     try {
       const state = thunkAPI.getState()
       const isHasCity = state?.cities?.cities.some(
@@ -37,7 +41,7 @@ const fetchCityAsync = createAsyncThunk(
         thunkAPI.dispatch(addCity({ ...data }))
         return data
       }
-    } catch (error: any) {   // todo
+    } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message)
     }
   },
@@ -45,17 +49,18 @@ const fetchCityAsync = createAsyncThunk(
 
 const updateCityAsync = createAsyncThunk(
   'cities/updateCityAsync',
-  async (thunkArg: { cityName: string }, thunkAPI) => {
+  async (thunkArg: { cityName: string }, thunkAPI: any) => {
+    // why any?  - cause there is some troubles with thunkApi
+    // https://redux-toolkit.js.org/usage/usage-with-typescript
     try {
       const response = await fetchCityByName(thunkArg.cityName)
       if (!response.ok) {
-        throw new Error('Server Error!') // todo
+        throw new Error('Server Error!')
       }
       const data = await response.json()
       thunkAPI.dispatch(updateCity({ ...data }))
       return data
     } catch (error: any) {
-      // todo
       return thunkAPI.rejectWithValue(error.message)
     }
   },

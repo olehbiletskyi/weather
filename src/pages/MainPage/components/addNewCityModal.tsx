@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  TextField,
-} from '@mui/material'
+import { DialogActions, DialogContent, DialogContentText, TextField } from '@mui/material'
 import { Button, Modal } from 'components'
 
 interface IProps {
@@ -34,31 +29,25 @@ const AddNewCityModal = ({
         <DialogContent>
           <DialogContentText>{description}</DialogContentText>
           <TextField
-              value={value}
-              autoFocus
-              margin='dense'
-              id='name'
-              label={label}
-              type='text'
-              fullWidth
-              variant='outlined'
-              onChange={onChangeValue}
+            value={value}
+            autoFocus
+            margin='dense'
+            id='name'
+            label={label}
+            type='text'
+            fullWidth
+            variant='outlined'
+            onChange={onChangeValue}
           />
         </DialogContent>
         <DialogActions sx={{ justifyContent: 'space-between', paddingX: '18px' }}>
+          <Button title='Cancel' onClick={close} color='error' variant='text' size='medium' />
           <Button
-              title='Cancel'
-              onClick={close}
-              color='error'
-              variant='text'
-              size='medium'
-          />
-          <Button
-              title='Find and subscribe'
-              onClick={submitHandler}
-              color='success'
-              size='medium'
-              disabled={value.trim().length === 0}
+            title='Find and subscribe'
+            onClick={submitHandler}
+            color='success'
+            size='medium'
+            disabled={value.trim().length === 0}
           />
         </DialogActions>
       </>

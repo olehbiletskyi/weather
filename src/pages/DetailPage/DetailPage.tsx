@@ -19,7 +19,6 @@ import WeatherIndicatorItemWrapper from './components/weatherIndicatorItemWrappe
 import { parseTimestamp } from 'utils'
 
 const DetailPage: FC = () => {
-
   const dispatch = useAppDispatch()
 
   const [searchParams] = useSearchParams()
@@ -57,9 +56,7 @@ const DetailPage: FC = () => {
 
       <WeatherIndicatorItemWrapper>
         <DeviceThermostatIcon color={'error'} sx={{ width: '40px', height: '40px', mr: '5px' }} />
-        <TextH5>
-          Temperature: {city?.main?.temp}&#8451;
-        </TextH5>
+        <TextH5>Temperature: {city?.main?.temp}&#8451;</TextH5>
       </WeatherIndicatorItemWrapper>
 
       <WeatherIndicatorItemWrapper>
@@ -71,37 +68,27 @@ const DetailPage: FC = () => {
 
       <WeatherIndicatorItemWrapper>
         <CloudQueueIcon color={'info'} sx={{ width: '40px', height: '40px', mr: 2 }} />
-        <TextH5>
-          Clouds: {city?.clouds?.all} %
-        </TextH5>
+        <TextH5>Clouds: {city?.clouds?.all} %</TextH5>
       </WeatherIndicatorItemWrapper>
 
       <WeatherIndicatorItemWrapper>
         <InvertColorsIcon color={'info'} sx={{ width: '40px', height: '40px', mr: 2 }} />
-        <TextH5>
-          Humidity: {city?.main?.humidity} %
-        </TextH5>
+        <TextH5>Humidity: {city?.main?.humidity} %</TextH5>
       </WeatherIndicatorItemWrapper>
 
       <WeatherIndicatorItemWrapper>
         <TireRepairIcon color={'error'} sx={{ width: '40px', height: '40px', mr: 2 }} />
-        <TextH5>
-          Pressure: {city?.main?.pressure} hPa.
-        </TextH5>
+        <TextH5>Pressure: {city?.main?.pressure} hPa.</TextH5>
       </WeatherIndicatorItemWrapper>
 
       <WeatherIndicatorItemWrapper>
         <VisibilityIcon color={'success'} sx={{ width: '40px', height: '40px', mr: 2 }} />
-        <TextH5>
-          Visibility: {city?.visibility} m.
-        </TextH5>
+        <TextH5>Visibility: {city?.visibility} m.</TextH5>
       </WeatherIndicatorItemWrapper>
 
       <WeatherIndicatorItemWrapper>
         <AirIcon color={'warning'} sx={{ width: '40px', height: '40px', mr: 2 }} />
-        <TextH5>
-          Wind speed: {city?.wind?.speed} m/s.
-        </TextH5>
+        <TextH5>Wind speed: {city?.wind?.speed} m/s.</TextH5>
       </WeatherIndicatorItemWrapper>
 
       <WeatherIndicatorItemWrapper>

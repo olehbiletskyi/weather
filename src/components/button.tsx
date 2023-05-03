@@ -4,7 +4,7 @@ import { Button as MUIButton, ButtonProps } from '@mui/material'
 const Button = ({
   title,
   variant = 'contained',
-  color='info',
+  color = 'info',
   size = 'small',
   onClick,
   sx,

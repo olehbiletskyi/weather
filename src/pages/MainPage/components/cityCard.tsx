@@ -79,18 +79,9 @@ const CityCard = ({ data }: IProps) => {
         <CardActions
           sx={{ width: '100%', justifyContent: 'space-between', boxSizing: 'border-box' }}
         >
-          <Button
-            onClick={removeCityHandler}
-            variant='outlined'
-            color={'error'}
-            title={'Delete'}
-          />
+          <Button onClick={removeCityHandler} variant='outlined' color={'error'} title={'Delete'} />
 
-          <Button
-              onClick={goToDetailPage}
-              color={'success'}
-              title={'See More'}
-          />
+          <Button onClick={goToDetailPage} color={'success'} title={'See More'} />
         </CardActions>
       </Card>
     </Grid>

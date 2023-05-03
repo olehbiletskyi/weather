@@ -1,10 +1,5 @@
 import React from 'react'
-import {
-  Button,
-  DialogActions,
-  DialogContentText,
-  DialogContent,
-} from '@mui/material'
+import { Button, DialogActions, DialogContentText, DialogContent } from '@mui/material'
 import Modal from './modal'
 
 interface IProps {

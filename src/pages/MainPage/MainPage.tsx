@@ -20,11 +20,9 @@ const MainPage: FC = () => {
 
   const { citiesController, cities, status, error } = useAppSelector(allCitiesSelector)
 
-
   useEffect(() => {
     document.title = 'Current weather'
   }, [])
-
 
   useEffect(() => {
     dispatch(initializeCitiesController({}))
