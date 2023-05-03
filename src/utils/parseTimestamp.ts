@@ -9,7 +9,9 @@ const parseTimestamp = (stamp: number): string => {
   const hoursLength = hours.toString().length
   const minutesLength = minutes.toString().length
 
-  return `${hoursLength === 2 ? hours : '0' + +hours}:${minutesLength === 2 ? minutes : '0' + +minutes}, ${day} of ${months[month+1]}`
+  return `${hoursLength === 2 ? hours : '0' + +hours}:${
+    minutesLength === 2 ? minutes : '0' + +minutes
+  }, ${day} of ${months[month + 1]}`
 }
 
 export default parseTimestamp

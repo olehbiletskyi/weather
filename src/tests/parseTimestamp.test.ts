@@ -10,8 +10,10 @@ describe('parseTimestamp', () => {
     { timestamp: 1673082947, expectDate: '09:15, 7 of January' },
   ]
 
-  test.each(timestampArray)('should be format  - HH:MM, D of Month($timestamp, $expectDate)',
+  test.each(timestampArray)(
+    'should be format  - HH:MM, D of Month($timestamp, $expectDate)',
     ({ timestamp, expectDate }) => {
       expect(parseTimestamp(timestamp)).toBe(expectDate)
-    })
+    },
+  )
 })

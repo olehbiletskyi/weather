@@ -12,10 +12,11 @@ import WbSunnyIcon from '@mui/icons-material/WbSunny'
 import WbTwilightIcon from '@mui/icons-material/WbTwilight'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import { useAppDispatch, useAppSelector } from 'hooks'
-import { cityByIdSelector } from 'store/citiesSelector/citiesSelector'
-import { fetchCityAsync } from 'store/citiesSlice/citiesSlice'
+import { cityByIdSelector, getDetailForecastSelector } from 'store/citiesSelector/citiesSelector'
+import { fetchCityAsync, fetchDetailForecastAsync } from 'store/citiesSlice/citiesSlice'
 import { Loader, TextH5 } from 'components'
 import WeatherIndicatorItemWrapper from './components/weatherIndicatorItemWrapper'
+import DetailForecastComponent from './components/detailForecastComponent'
 import { parseTimestamp } from 'utils'
 
 const DetailPage: FC = () => {
@@ -31,6 +32,14 @@ const DetailPage: FC = () => {
   }, [cityNameFromSearchParams])
 
   const city = useAppSelector(cityByIdSelector(cityIdFromSearchParams))
+
+  const { list } = useAppSelector(getDetailForecastSelector)
+
+  useEffect(() => {
+    if (city) {
+      dispatch(fetchDetailForecastAsync({ coords: { ...city?.coord } }))
+    }
+  }, [city])
 
   if (!city) {
     dispatch(fetchCityAsync({ cityName: cityNameFromSearchParams }))
@@ -104,6 +113,8 @@ const DetailPage: FC = () => {
           Sunset: {parseTimestamp(city?.sys?.sunset)} <i>(UTC timezone)</i>
         </TextH5>
       </WeatherIndicatorItemWrapper>
+
+      <DetailForecastComponent list={list} />
     </Grid>
   )
 }
