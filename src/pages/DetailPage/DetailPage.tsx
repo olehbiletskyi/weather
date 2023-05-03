@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { Box, Typography, Grid } from '@mui/material'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
@@ -14,16 +14,22 @@ import VisibilityIcon from '@mui/icons-material/Visibility'
 import { useAppDispatch, useAppSelector } from 'hooks'
 import { cityByIdSelector } from 'store/citiesSelector/citiesSelector'
 import { fetchCityAsync } from 'store/citiesSlice/citiesSlice'
-import { IndicatorItemWrapper, Loader } from 'components'
+import { Loader, TextH5 } from 'components'
+import WeatherIndicatorItemWrapper from './components/weatherIndicatorItemWrapper'
 import { parseTimestamp } from 'utils'
 
 const DetailPage: FC = () => {
+
   const dispatch = useAppDispatch()
 
   const [searchParams] = useSearchParams()
 
   const cityIdFromSearchParams = searchParams.get('cityId') || ''
   const cityNameFromSearchParams = searchParams.get('cityName') || ''
+
+  useEffect(() => {
+    document.title = `Current weather - ${cityNameFromSearchParams}`
+  }, [cityNameFromSearchParams])
 
   const city = useAppSelector(cityByIdSelector(cityIdFromSearchParams))
 
@@ -49,68 +55,68 @@ const DetailPage: FC = () => {
         </Box>
       </Grid>
 
-      <IndicatorItemWrapper>
+      <WeatherIndicatorItemWrapper>
         <DeviceThermostatIcon color={'error'} sx={{ width: '40px', height: '40px', mr: '5px' }} />
-        <Typography variant='h5' component='div'>
+        <TextH5>
           Temperature: {city?.main?.temp}&#8451;
-        </Typography>
-      </IndicatorItemWrapper>
+        </TextH5>
+      </WeatherIndicatorItemWrapper>
 
-      <IndicatorItemWrapper>
+      <WeatherIndicatorItemWrapper>
         <AttributionIcon color={'success'} sx={{ width: '40px', height: '40px', mr: 2 }} />
         <Typography variant='h5' sx={{ fontStyle: 'italic' }} component='div'>
           Real feel: {city?.main?.feels_like}&#8451;
         </Typography>
-      </IndicatorItemWrapper>
+      </WeatherIndicatorItemWrapper>
 
-      <IndicatorItemWrapper>
+      <WeatherIndicatorItemWrapper>
         <CloudQueueIcon color={'info'} sx={{ width: '40px', height: '40px', mr: 2 }} />
-        <Typography variant='h5' component='div'>
+        <TextH5>
           Clouds: {city?.clouds?.all} %
-        </Typography>
-      </IndicatorItemWrapper>
+        </TextH5>
+      </WeatherIndicatorItemWrapper>
 
-      <IndicatorItemWrapper>
+      <WeatherIndicatorItemWrapper>
         <InvertColorsIcon color={'info'} sx={{ width: '40px', height: '40px', mr: 2 }} />
-        <Typography variant='h5' component='div'>
+        <TextH5>
           Humidity: {city?.main?.humidity} %
-        </Typography>
-      </IndicatorItemWrapper>
+        </TextH5>
+      </WeatherIndicatorItemWrapper>
 
-      <IndicatorItemWrapper>
+      <WeatherIndicatorItemWrapper>
         <TireRepairIcon color={'error'} sx={{ width: '40px', height: '40px', mr: 2 }} />
-        <Typography variant='h5' component='div'>
+        <TextH5>
           Pressure: {city?.main?.pressure} hPa.
-        </Typography>
-      </IndicatorItemWrapper>
+        </TextH5>
+      </WeatherIndicatorItemWrapper>
 
-      <IndicatorItemWrapper>
+      <WeatherIndicatorItemWrapper>
         <VisibilityIcon color={'success'} sx={{ width: '40px', height: '40px', mr: 2 }} />
-        <Typography variant='h5' component='div'>
+        <TextH5>
           Visibility: {city?.visibility} m.
-        </Typography>
-      </IndicatorItemWrapper>
+        </TextH5>
+      </WeatherIndicatorItemWrapper>
 
-      <IndicatorItemWrapper>
+      <WeatherIndicatorItemWrapper>
         <AirIcon color={'warning'} sx={{ width: '40px', height: '40px', mr: 2 }} />
-        <Typography variant='h5' component='div'>
+        <TextH5>
           Wind speed: {city?.wind?.speed} m/s.
-        </Typography>
-      </IndicatorItemWrapper>
+        </TextH5>
+      </WeatherIndicatorItemWrapper>
 
-      <IndicatorItemWrapper>
+      <WeatherIndicatorItemWrapper>
         <WbSunnyIcon sx={{ width: '40px', height: '40px', mr: 2, color: '#ffcc00' }} />
-        <Typography variant='h5' component='div'>
+        <TextH5>
           Sunrise: {parseTimestamp(city?.sys?.sunrise)} <i>(Kyiv timezone)</i>
-        </Typography>
-      </IndicatorItemWrapper>
+        </TextH5>
+      </WeatherIndicatorItemWrapper>
 
-      <IndicatorItemWrapper>
+      <WeatherIndicatorItemWrapper>
         <WbTwilightIcon sx={{ width: '40px', height: '40px', mr: 2, color: '#FA5F55' }} />
-        <Typography variant='h5' component='div'>
+        <TextH5>
           Sunset: {parseTimestamp(city?.sys?.sunset)} <i>(Kyiv timezone)</i>
-        </Typography>
-      </IndicatorItemWrapper>
+        </TextH5>
+      </WeatherIndicatorItemWrapper>
     </Grid>
   )
 }

@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector, useIsOpenControl } from 'hooks'
 import { fetchCityAsync, generateError } from 'store/citiesSlice/citiesSlice'
 import { allCitiesSelector } from 'store/citiesSelector/citiesSelector'
 import AddNewCityModal from './addNewCityModal'
-import CustomTitle from './customTitle'
+import CustomDescription from './customDescription'
 
 const AddNewCityBtn = () => {
   const dispatch = useAppDispatch()
@@ -21,16 +21,14 @@ const AddNewCityBtn = () => {
   }
 
   const handleSubmit = () => {
-    const isHasCityAtStore = cities.some(item => item.name === cityName.trim())
-    if(!isHasCityAtStore) {
+    const isHasCityAtStore = cities.some((item) => item.name === cityName.trim())
+    if (!isHasCityAtStore) {
       dispatch(fetchCityAsync({ cityName: cityName.trim() }))
       close()
       setCityName('')
     } else {
       dispatch(generateError({ title: 'The city has already been added!' }))
     }
-
-
   }
 
   return (
@@ -45,14 +43,16 @@ const AddNewCityBtn = () => {
         <Typography variant={'h6'}>Add city</Typography>
       </Button>
 
+      {/* implemented modal below */}
       <AddNewCityModal
-        text={<CustomTitle />}
+        description={<CustomDescription />}
         value={cityName}
         onChangeValue={onChangeCityName}
         isOpen={isOpen}
         close={close}
         submitHandler={handleSubmit}
       />
+      {/**/}
     </>
   )
 }

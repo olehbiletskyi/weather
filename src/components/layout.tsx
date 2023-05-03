@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from 'react'
-import Header from './header'
 import { Container } from '@mui/material'
+import Header from './header'
 import AnimatePageWrapper from './animatePageWrapper'
 
 interface IProps {

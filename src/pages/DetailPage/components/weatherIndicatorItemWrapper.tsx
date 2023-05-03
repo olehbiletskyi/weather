@@ -5,8 +5,7 @@ interface IProps {
   children: JSX.Element | JSX.Element[]
 }
 
-
-const IndicatorItemWrapper: FC<IProps> = ({ children }) => {
+const WeatherIndicatorItemWrapper: FC<IProps> = ({ children }) => {
   return (
     <Grid container sx={{ alignItems: 'center', justifyContent: 'center', mb: '20px' }}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>{children}</Box>
@@ -14,4 +13,4 @@ const IndicatorItemWrapper: FC<IProps> = ({ children }) => {
   )
 }
 
-export default IndicatorItemWrapper
+export default WeatherIndicatorItemWrapper

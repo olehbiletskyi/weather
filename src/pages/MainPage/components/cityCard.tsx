@@ -1,10 +1,11 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Grid, Typography, Card, CardContent, CardActions, Button } from '@mui/material'
+import { Grid, Typography, Card, CardContent, CardActions } from '@mui/material'
 import CachedIcon from '@mui/icons-material/Cached'
-import { paths } from 'constants/paths'
-import { useAppDispatch } from 'hooks'
 import { removeCity, updateCityAsync } from 'store/citiesSlice/citiesSlice'
+import { useAppDispatch } from 'hooks'
+import { Button } from 'components'
+import { paths } from 'constants/paths'
 import { ICityWeather } from 'types'
 
 interface IProps {
@@ -78,12 +79,18 @@ const CityCard = ({ data }: IProps) => {
         <CardActions
           sx={{ width: '100%', justifyContent: 'space-between', boxSizing: 'border-box' }}
         >
-          <Button size='small' onClick={removeCityHandler} variant='outlined' color={'error'}>
-            DELETE
-          </Button>
-          <Button size='small' onClick={goToDetailPage} variant='contained' color={'success'}>
-            See More
-          </Button>
+          <Button
+            onClick={removeCityHandler}
+            variant='outlined'
+            color={'error'}
+            title={'Delete'}
+          />
+
+          <Button
+              onClick={goToDetailPage}
+              color={'success'}
+              title={'See More'}
+          />
         </CardActions>
       </Card>
     </Grid>

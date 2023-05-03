@@ -1,6 +1,6 @@
-import { motion, AnimationProps } from 'framer-motion'
 import { FC, ReactNode } from 'react'
 import { useLocation } from 'react-router-dom'
+import { motion, AnimationProps } from 'framer-motion'
 
 interface AnimationPageProps extends AnimationProps {
   children: ReactNode | JSX.Element

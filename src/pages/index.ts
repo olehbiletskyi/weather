@@ -1,5 +1,5 @@
-import MainPage from './MainPage'
-import DetailPage from './DetailPage'
-import ErrorPage from './ErrorPage'
+import MainPage from './MainPage/MainPage'
+import DetailPage from './DetailPage/DetailPage'
+import ErrorPage from './ErrorPage/ErrorPage'
 
 export { MainPage, DetailPage, ErrorPage }

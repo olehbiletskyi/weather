@@ -1,18 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ICityWeather } from 'types'
 import { fetchCityByName } from 'services'
+import { statuses } from 'constants/statuses'
 import { addCityToLocalStorage, deleteCityFromLocalStorage, getCitiesFromLocalStorage } from 'utils'
-import { AppThunk } from '../store'
-import { BaseThunkAPI } from '@reduxjs/toolkit/dist/createAsyncThunk'
+import { ICityWeather } from 'types'
 
-const enum statusEnum {
-  IDLE = 'idle',
-  PENDING = 'pending',
-  SUCCEEDED = 'succeeded',
-  FAILED = 'failed',
-}
-
-type statusTypes = `${statusEnum}`
+type statusTypes = `${statuses}`
 
 type stateType = {
   citiesController: Array<string>
@@ -24,7 +16,7 @@ type stateType = {
 const initialState: stateType = {
   citiesController: [],
   cities: [],
-  status: 'idle',
+  status: statuses.IDLE,
   error: null,
 }
 
@@ -33,11 +25,10 @@ const fetchCityAsync = createAsyncThunk(
   async (thunkArg: { cityName: string }, thunkAPI: any) => {
     try {
       const state = thunkAPI.getState()
-      console.log(state?.cities?.cities)
-      const isHasCity = state?.cities?.cities.some((item: ICityWeather) => item.name === thunkArg.cityName)
-      console.log(isHasCity)
-      if(!isHasCity) {
-        console.log('fetch!!!!!')
+      const isHasCity = state?.cities?.cities.some(
+        (item: ICityWeather) => item.name === thunkArg.cityName,
+      )
+      if (!isHasCity) {
         const response = await fetchCityByName(thunkArg.cityName)
         if (!response.ok) {
           throw new Error('Server error or the city was not found!')
@@ -46,9 +37,7 @@ const fetchCityAsync = createAsyncThunk(
         thunkAPI.dispatch(addCity({ ...data }))
         return data
       }
-
-
-    } catch (error: any) { // todo
+    } catch (error: any) {   // todo
       return thunkAPI.rejectWithValue(error.message)
     }
   },
@@ -72,7 +61,7 @@ const updateCityAsync = createAsyncThunk(
   },
 )
 
-// const fetchDetailForecast = createAsyncThunk() // todo
+// const fetchDetailForecast = createAsyncThunk() // todo for future
 
 const citiesSlice = createSlice({
   name: 'cities',
@@ -80,15 +69,15 @@ const citiesSlice = createSlice({
   reducers: {
     initializeCitiesController(state, action) {
       const citiesFromLocalStorage = getCitiesFromLocalStorage('Cities')
-      if(citiesFromLocalStorage) {
+      if (citiesFromLocalStorage) {
         state.citiesController = citiesFromLocalStorage
       }
     },
     addCity(state, action) {
-      const isHasAlreadyNewCityAtStore = state.cities.some(item => item.id === action.payload.id)
-      if(!isHasAlreadyNewCityAtStore) {
+      const isHasAlreadyNewCityAtStore = state.cities.some((item) => item.id === action.payload.id)
+      if (!isHasAlreadyNewCityAtStore) {
         state.cities.push(action.payload)
-        if(!state.citiesController.includes(action.payload.name)) {
+        if (!state.citiesController.includes(action.payload.name)) {
           state.citiesController.push(action.payload.name)
         }
         addCityToLocalStorage('Cities', action.payload.name)
@@ -99,16 +88,15 @@ const citiesSlice = createSlice({
     },
     removeCity(state, action: PayloadAction<{ id: number }>) {
       const deletedCity = state.cities.find((item) => item.id === action.payload.id)
-      if(deletedCity) {
+      if (deletedCity) {
         state.cities = state.cities.filter((item) => item.id !== action.payload.id)
-        state.citiesController = state.citiesController.filter(item => item !== deletedCity.name)
+        state.citiesController = state.citiesController.filter((item) => item !== deletedCity.name)
         deleteCityFromLocalStorage('Cities', deletedCity?.name)
       }
     },
     generateError(state, action) {
       state.error = action.payload.title
-      state.status = 'failed'
-
+      state.status = statuses.FAILED
     },
     cancelError(state, action) {
       state.error = null
@@ -118,35 +106,42 @@ const citiesSlice = createSlice({
   extraReducers: (builder) => {
     // fetchCityAsync
     builder.addCase(fetchCityAsync.pending, (state, action) => {
-      state.status = 'pending'
+      state.status = statuses.PENDING
       state.error = null
     })
     builder.addCase(fetchCityAsync.fulfilled, (state, action) => {
-      state.status = 'succeeded'
+      state.status = statuses.SUCCEEDED
       state.error = null
     })
     builder.addCase(fetchCityAsync.rejected, (state, action) => {
-      state.status = 'failed'
+      state.status = statuses.FAILED
       state.error = action.payload
     })
     // updateCityAsync
     builder.addCase(updateCityAsync.pending, (state, action) => {
-      state.status = 'pending'
+      state.status = statuses.PENDING
       state.error = null
     })
     builder.addCase(updateCityAsync.fulfilled, (state, action) => {
-      state.status = 'succeeded'
+      state.status = statuses.SUCCEEDED
       state.error = null
     })
     builder.addCase(updateCityAsync.rejected, (state, action) => {
-      state.status = 'failed'
+      state.status = statuses.FAILED
       state.error = action.payload
     })
   },
 })
 
-export { fetchCityAsync,updateCityAsync }
+export { fetchCityAsync, updateCityAsync }
 
-export const { initializeCitiesController, addCity, updateCity, removeCity, generateError, cancelError } = citiesSlice.actions
+export const {
+  initializeCitiesController,
+  addCity,
+  updateCity,
+  removeCity,
+  generateError,
+  cancelError,
+} = citiesSlice.actions
 
 export default citiesSlice

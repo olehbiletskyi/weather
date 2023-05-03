@@ -1,19 +1,9 @@
 import Layout from './layout'
 import Header from './header'
-import CityCard from './cityCard'
-import AddNewCityBtn from './addNewCityBtn'
-import ErrorAlertDialog from './errorAlertDialog'
-import CustomTitle from './customTitle'
+import ErrorAlert from './errorAlert'
 import Loader from './loader'
-import IndicatorItemWrapper from './IndicatorItemWrapper'
+import Button from './button'
+import Modal from './modal'
+import TextH5 from './testH5'
 
-export {
-  Layout,
-  Header,
-  CityCard,
-  AddNewCityBtn,
-  ErrorAlertDialog,
-  CustomTitle,
-  Loader,
-  IndicatorItemWrapper,
-}
+export { Layout, Header, ErrorAlert, Loader, Button, Modal, TextH5 }
