@@ -94,14 +94,14 @@ const DetailPage: FC = () => {
       <WeatherIndicatorItemWrapper>
         <WbSunnyIcon sx={{ width: '40px', height: '40px', mr: 2, color: '#ffcc00' }} />
         <TextH5>
-          Sunrise: {parseTimestamp(city?.sys?.sunrise)} <i>(Kyiv timezone)</i>
+          Sunrise: {parseTimestamp(city?.sys?.sunrise)} <i>(UTC timezone)</i>
         </TextH5>
       </WeatherIndicatorItemWrapper>
 
       <WeatherIndicatorItemWrapper>
         <WbTwilightIcon sx={{ width: '40px', height: '40px', mr: 2, color: '#FA5F55' }} />
         <TextH5>
-          Sunset: {parseTimestamp(city?.sys?.sunset)} <i>(Kyiv timezone)</i>
+          Sunset: {parseTimestamp(city?.sys?.sunset)} <i>(UTC timezone)</i>
         </TextH5>
       </WeatherIndicatorItemWrapper>
     </Grid>
